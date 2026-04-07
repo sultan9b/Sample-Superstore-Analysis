@@ -1,0 +1,69 @@
+#version: '3.8'
+
+
+services:
+  postgres_etl:
+  # Трансформация данных будет происходить в контейнере PostgreSQL
+    image: postgres:16
+    container_name: postgres_etl
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+
+  clickhouse_dwh:
+  # ClickHouse как аналитическое хранилище DWH
+    image: clickhouse/clickhouse-server:24.3
+    container_name: clickhouse_dwh
+    restart: always
+    environment:
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ch_data:/var/lib/clickhouse
+      - ch_logs:/var/log/clickhouse-server
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+  
+  jupyter:
+    # Jupyter Notebook для аналитики и визуализации данных
+    image: jupyter/scipy-notebook:latest
+    container_name: jupyter
+    restart: unless-stopped
+    environment:
+      JUPYTER_TOKEN: ${JUPYTER_TOKEN}
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    depends_on:
+      postgres_etl:
+        condition: service_healthy
+      clickhouse_dwh:
+        condition: service_healthy
+      
+
+volumes:
+  pg_data:
+  ch_data:
+  ch_logs:

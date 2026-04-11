@@ -112,3 +112,15 @@ create table if not exists stage.order_items (
 	foreign key (product_id) references stage.products(product_id)
 	);
 
+
+
+-- ЗАПОЛНЕНИЕ СПРАВОЧНИКОВ ДАННЫМИ ИЗ ТАБЛИЦЫ ИСТОЧНИКА
+-- Заполнение таблицы категорий
+insert into stage.categories (category)
+select distinct category from raw.raw_superstore;
+
+-- Заполнение таблицы подкатегорий
+insert into stage.sub_categories (sub_category, category_id)
+select distinct sub_category, c.category_id
+from raw.raw_superstore r
+join stage.categories c on r.category = c.category;

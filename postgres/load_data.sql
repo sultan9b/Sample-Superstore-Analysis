@@ -1,28 +1,26 @@
 -- Создание схемы для этапа загрузки сырых данных
 create schema if not exists raw;
--- Создание схемы для этапа трансформации данных
-create schema if not exists stage;
 
 
 -- Создание таблицы источника данных
 create table if not exists raw.raw_superstore (
-	category varchar(15),
-	city varchar(30),
-	customer_id varchar(8),
-	customer_name varchar(30),
+	category text,
+	city text,
+	customer_id text,
+	customer_name text,
 	order_date date,
-	order_id varchar(14),
+	order_id text,
 	postal_code int,
-	product_id varchar(15),
-	product_name varchar(127),
-	region varchar(7),
+	product_id text,
+	product_name text,
+	region text,
 	row_id int,
-	segment varchar(12),
+	segment text,
 	ship_date date,
-	ship_mode varchar(15),
-	ship_status varchar(16),
-	state varchar(21),
-	sub_category varchar(12),
+	ship_mode text,
+	ship_status text,
+	state text,
+	sub_category text,
 	days_to_ship_actual int,
 	days_to_ship_scheduled int,
 	discount decimal(3,2),

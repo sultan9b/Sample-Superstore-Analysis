@@ -1,6 +1,7 @@
 # :memo: Sample Superstore Analysis
 
-Тренировочный проект по известному шаблону Sample-supersore
+Тренировочный проект по известному датасету Sample-supersore
+---
 
 ## Цель проекта
 Выполнение разных видов аналитики в данном шаблоне. 
@@ -33,8 +34,8 @@
 ship_ modes ─────┐┌─── ship_statuses
                  ||
 order_items ─── orders  ──── cities ──── states ──── regions
-     |             | 
-     |             └───── customers  ───── segments
+     |           | 
+     |           └───── customers  ───── segments
      |
      └────── products ────── sub_categories ────── categories
 ```

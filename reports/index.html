@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аналитические отчеты Superstore</title>
+    <style>
+        /* Сброс базовых отступов */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh; /* Занимает всю высоту экрана */
+            overflow: hidden; /* Убираем двойные скроллбары */
+            background-color: #f7f7f7;
+        }
+
+        /* Боковое меню (Сайдбар) */
+        .sidebar {
+            width: 280px;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            font-weight: 600;
+        }
+
+        .nav-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 5px;
+            text-align: left;
+            background: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .nav-button.active {
+            background-color: #e6f0fa;
+            color: #0066cc;
+            font-weight: 500;
+        }
+
+        /* Область контента (Iframe) */
+        .content {
+            flex-grow: 1;
+            background-color: #ffffff;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>📊 Дашборды проекта</h2>
+        
+        <button class="nav-button active" onclick="loadReport('02_eda_analysis.html', this)">
+            1. EDA анализ
+        </button>
+        <button class="nav-button" onclick="loadReport('03_cohort_analysis.html', this)">
+            2. Когортный анализ
+        </button>
+        <button class="nav-button" onclick="loadReport('report3.html', this)">
+            3. Сводная статистика
+        </button>
+    </div>
+
+    <div class="content">
+        <iframe id="reportFrame" src="02_eda_analysis.html"></iframe>
+    </div>
+
+    <script>
+        function loadReport(url, element) {
+            // 1. Меняет источник iframe
+            document.getElementById('reportFrame').src = url;
+
+            // 2. Убирает выделение со всех кнопок
+            let buttons = document.querySelectorAll('.nav-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // 3. Добавляет выделение нажатой кнопке
+            element.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
